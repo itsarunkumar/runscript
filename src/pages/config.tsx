@@ -5,14 +5,6 @@ import { open } from "@tauri-apps/api/dialog";
 import { sep } from "@tauri-apps/api/path";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { getFolders, insertFolder, deleteFolder, Folder } from "@/lib/db";
 import { idGenerator } from "@/lib/unique-id";
@@ -59,49 +51,6 @@ export default function ConfigPage() {
       console.error("Error deleting folder:", error);
     }
   }, []);
-
-  // useEffect(() => {
-  //   console.log("from data", data);
-  // }, [data]);
-
-  // return (
-  //   <div className="w-full flex flex-col items-center px-5">
-  //     <div className="w-full flex  items-center justify-between">
-  //       <h1 className="capitalize">script folders</h1>
-  //       <Button
-  //         onClick={addFolder}
-  //         size="sm"
-  //         variant="outline"
-  //         className="flex items-center gap-2"
-  //       >
-  //         ; Add folder
-  //       </Button>
-  //     </div>
-  //     <div className="w-full">
-  //       <Suspense fallback="loading...">
-  //         {data ? (
-  //           <CommandPalette.List>
-  //             {data.map((folder, i) => (
-  //               <CommandPalette.ListItem
-  //                 key={idGenerator.generateUniqueId()}
-  //                 index={i + Math.random() * 1000}
-  //                 className=""
-  //                 children={
-  //                   <FolderItem
-  //                     folder={folder}
-  //                     onDelete={() => deleteFolderDb(folder.id!)}
-  //                   />
-  //                 }
-  //               ></CommandPalette.ListItem>
-  //             ))}
-  //           </CommandPalette.List>
-  //         ) : (
-  //           "loading"
-  //         )}
-  //       </Suspense>
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <div className="w-full flex flex-col items-center px-5">

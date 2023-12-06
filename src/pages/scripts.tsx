@@ -11,7 +11,6 @@ import { getFolders, Folder } from "@/lib/db";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { setStore } from "@/lib/config-store";
 
 export default function ScriptPage() {
   const [data, setData] = useState<FileEntry[][] | null>(null);
