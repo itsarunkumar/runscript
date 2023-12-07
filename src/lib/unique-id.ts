@@ -25,6 +25,7 @@ class AlphanumericUuidGenerator {
     if (this.seededRandom !== undefined) {
       return Array.from({ length: this.length }, () =>
         this.characters.charAt(
+          // @ts-ignore
           Math.floor(this.seededRandom() * this.charactersLength)
         )
       ).join("");
