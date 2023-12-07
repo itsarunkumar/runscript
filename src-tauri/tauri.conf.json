@@ -92,7 +92,7 @@
         "width": 600,
         "height": 400,
         "center": true,
-        "decorations": false,
+        "decorations": true,
         "visible": true,
         "transparent": true
       }
