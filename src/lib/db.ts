@@ -25,7 +25,7 @@ export async function insertFolder(data: Folder) {
   const folderId = idGenerator.generateUniqueId(); // Generate a UUID for the folder
 
   await db.execute(`INSERT INTO folders (id, name, path) VALUES ($1, $2, $3)`, [
-    folderId,
+    folderId + data.name,
     data.name,
     data.path,
   ]);
