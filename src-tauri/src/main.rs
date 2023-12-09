@@ -28,7 +28,11 @@ fn main() {
     tauri::Builder::default()
         .system_tray(utils::make_tray())
         .on_system_tray_event(utils::handle_tray_event)
-        .invoke_handler(tauri::generate_handler![greet, run_script])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            run_script,
+            utils::execute_script
+        ])
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_sql::Builder::default().build())
         .plugin(tauri_plugin_autostart::init(

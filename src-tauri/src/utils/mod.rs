@@ -9,4 +9,5 @@ pub use tray::handle_tray_event;
 pub use tray::make_tray;
 
 // scripts executers
+pub use scripts::__cmd__execute_script;
 pub use scripts::execute_script;

@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "runscript-tauri",
+    "productName": "runscript",
     "version": "0.0.0"
   },
   "tauri": {
@@ -88,9 +88,9 @@
       {
         "fullscreen": false,
         "resizable": false,
-        "title": "runscript-tauri",
-        "width": 700,
-        "height": 500,
+        "title": "runscript",
+        "width": 600,
+        "height": 400,
         "center": true,
         "decorations": false,
         "visible": true,

@@ -33,7 +33,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-full ">
+    <div className="w-full h-full bg-background ">
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {searchTerm.length === 0 ? (
         <Tabs defaultValue="scripts">

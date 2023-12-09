@@ -5,6 +5,7 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 import { useScriptList } from "@/lib/store/scripts";
 import { cn } from "@/lib/utils";
+import { SingleScript } from "./single-script";
 
 interface SearchProps {
   searchTerm: string;
@@ -36,12 +37,12 @@ const Search: React.FC<SearchProps> = ({ searchTerm, setSearchTerm }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
+
       {searchResults.length > 0 && (
-        <div className="w-full">
+        <div className="w-full h-full bg-slate-900 flex flex-col items-center justify-start py-2 px-5">
           {searchResults.map((file) => (
-            <div key={file?.path}>
-              <h1>{file?.name}</h1>
-            </div>
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            <SingleScript key={file?.path} file={file!} setActive={() => {}} />
           ))}
         </div>
       )}

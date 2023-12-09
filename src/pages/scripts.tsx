@@ -22,7 +22,7 @@ export default function ScriptPage() {
   return (
     <div className="w-full h-full flex my-3 ">
       <div className="w-1/2 h-full flex flex-col gap-2 px-5  ">
-        <ScrollArea className="h-96">
+        <ScrollArea className="h-72">
           {scripts &&
             scripts?.flatMap((folderEntries) =>
               folderEntries.map((file) => (
