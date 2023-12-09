@@ -2,7 +2,7 @@ import { FileEntry } from "@tauri-apps/api/fs";
 import { metadata, Metadata } from "tauri-plugin-fs-extra-api";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
-import { invoke, InvokeArgs } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/tauri";
 
 import { getLanguageCommands } from "@/lib/config-store";
 import { Button } from "./ui/button";
