@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+:root,
+#root {
+  height: 100%;
+  overflow: hidden;
+  @apply rounded-lg;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -71,6 +80,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-none text-foreground;
+    @apply bg-background text-foreground;
   }
 }

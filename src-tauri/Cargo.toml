@@ -13,6 +13,7 @@ edition = "2021"
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
+tauri-plugin-fs-extra = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri = { version = "1.5", features = [ "system-tray", "global-shortcut-all", "window-unmaximize", "window-minimize", "dialog-all", "shell-all", "window-start-dragging", "window-maximize", "window-show", "window-close", "fs-all", "path-all", "window-unminimize", "window-hide"] }

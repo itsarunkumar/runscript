@@ -24,14 +24,17 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
+    "date-fns": "^2.30.0",
     "fuse.js": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
     "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
+    "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
     "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql#v1",
-    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1"
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.6",

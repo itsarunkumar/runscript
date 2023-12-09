@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, Suspense } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { open } from "@tauri-apps/api/dialog";
 import { sep } from "@tauri-apps/api/path";
 
@@ -17,7 +17,6 @@ export default function ConfigPage() {
     async function initApp() {
       try {
         const folders = (await getFolders()) as Folder[];
-        console.log("foldes", folders);
 
         setData(folders);
       } catch (error) {
@@ -53,8 +52,8 @@ export default function ConfigPage() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center px-5">
-      <div className="w-full flex  items-center justify-between">
+    <div className="w-full h-full flex flex-col gap-3">
+      <div className="flex justify-between  px-5">
         <h1 className="capitalize">script folders</h1>
         <Button
           onClick={addFolder}
@@ -65,18 +64,16 @@ export default function ConfigPage() {
           Add folder
         </Button>
       </div>
-      <ScrollArea className="w-full h-[300px]">
-        <Suspense fallback="loading...">
-          {data
-            ? data.map((folder) => (
-                <FolderItem
-                  key={idGenerator.generateUniqueId()}
-                  folder={folder}
-                  onDelete={() => deleteFolderDb(folder.id!)}
-                />
-              ))
-            : "loading"}
-        </Suspense>
+      <ScrollArea className="w-full h-80 px-5 mx-auto ">
+        {data
+          ? data.map((folder) => (
+              <FolderItem
+                key={idGenerator.generateUniqueId()}
+                folder={folder}
+                onDelete={() => deleteFolderDb(folder.id!)}
+              />
+            ))
+          : "loading"}
       </ScrollArea>
     </div>
   );
@@ -88,12 +85,10 @@ interface FolderItemProps {
 }
 
 const FolderItem: React.FC<FolderItemProps> = ({ folder, onDelete }) => (
-  <div className="w-full flex justify-between items-start space-x-3 space-y-3 px-5  rounded-md ">
-    <div className="flex flex-col items-start gap-1">
-      <h1 className="capitalize text-lg text-slate-50">{folder.name}</h1>
-      <p className="text-xs text-muted-foreground w-full overflow-hidden">
-        {folder.path}
-      </p>
+  <div className="flex justify-between items-center gap-2  py-2 px-5 rounded-md hover:bg-gray-700">
+    <div>
+      <h1 className="capitalize text-base ">{folder.name}</h1>
+      <p className="text-sm text-gray-500">{folder.path}</p>
     </div>
     <Button variant="ghost" onClick={onDelete}>
       Delete

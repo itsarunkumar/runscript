@@ -2709,6 +2709,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-autostart",
+ "tauri-plugin-fs-extra",
  "tauri-plugin-sql",
  "tauri-plugin-store",
 ]
@@ -3575,7 +3576,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-autostart"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#84208e0a53d0dcea6629659b88b1968469d7c030"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#a5792e220aea568e2d9fabfceff15ef5fcca5473"
 dependencies = [
  "auto-launch",
  "log",
@@ -3586,9 +3587,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "tauri-plugin-fs-extra"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#a5792e220aea568e2d9fabfceff15ef5fcca5473"
+dependencies = [
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
+]
+
+[[package]]
 name = "tauri-plugin-sql"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#84208e0a53d0dcea6629659b88b1968469d7c030"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#a5792e220aea568e2d9fabfceff15ef5fcca5473"
 dependencies = [
  "futures-core",
  "log",
@@ -3604,7 +3617,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-store"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#84208e0a53d0dcea6629659b88b1968469d7c030"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#a5792e220aea568e2d9fabfceff15ef5fcca5473"
 dependencies = [
  "log",
  "serde",
