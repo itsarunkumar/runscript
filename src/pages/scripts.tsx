@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { FileEntry } from "@tauri-apps/api/fs";
-import { Command } from "@tauri-apps/api/shell";
 
 import { SingleScript } from "@/components/single-script";
 import { ScrollArea } from "@/components/ui/scroll-area";
