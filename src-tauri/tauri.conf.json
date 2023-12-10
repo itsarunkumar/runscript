@@ -27,11 +27,6 @@
             "name": "script",
             "cmd": "node",
             "args": true
-          },
-          {
-            "name": "binary/nodejs/node",
-            "sidecar": true,
-            "args": true
           }
         ]
       },
@@ -85,7 +80,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "externalBin": ["binary/nodejs/node"]
+      "externalBin": []
     },
     "security": {
       "csp": null
