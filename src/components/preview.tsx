@@ -32,9 +32,8 @@ export default function Preview({ file }: { file: FileEntry }) {
     updatePreview();
   }, [file]);
 
-  async function executeScript() {
-    const res = await invoke("execute_script", {
-      command: "code",
+  async function openScript() {
+    const res = await invoke("open_script", {
       args: file.path,
     });
     console.log("res execed", res);
@@ -43,7 +42,7 @@ export default function Preview({ file }: { file: FileEntry }) {
   // Check if data is available before rendering
   if (!scriptMeta || !command || !langName) {
     return (
-      <p className="text-gray-500 first-letter:uppercase   flex flex-col gap-2">
+      <p className="text-gray-500 first-letter:uppercase  flex flex-col gap-2">
         <span>{file.name}</span>
         script is not selected or selected script language is not in the config
         file.
@@ -73,7 +72,7 @@ export default function Preview({ file }: { file: FileEntry }) {
           )}
         </span>
       </span>
-      <Button size="sm" onClick={executeScript}>
+      <Button size="sm" onClick={openScript}>
         Open script
       </Button>
     </div>

@@ -1,9 +1,14 @@
 import Database from "tauri-plugin-sql-api";
-import { homeDir } from "@tauri-apps/api/path";
+import { BaseDirectory, homeDir } from "@tauri-apps/api/path";
 
 import { idGenerator } from "./unique-id";
+import { createDir, exists } from "@tauri-apps/api/fs";
 
 const path = `${await homeDir()}/runscript`;
+
+if (!(await exists(path, { dir: BaseDirectory.Home }))) {
+  await createDir(path, { dir: BaseDirectory.Home });
+}
 
 export const db = await Database.load(`sqlite:${path}/rs.sqlite`);
 

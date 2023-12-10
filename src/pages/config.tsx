@@ -9,6 +9,12 @@ import { Button } from "@/components/ui/button";
 import { getFolders, insertFolder, deleteFolder, Folder } from "@/lib/db";
 import { idGenerator } from "@/lib/unique-id";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function ConfigPage() {
   const [data, setData] = useState<Folder[]>([]);
@@ -27,6 +33,9 @@ export default function ConfigPage() {
     initApp();
   }, []);
 
+  /* The `addFolder` function is a callback function that is used to add a folder to the application.
+  It is created using the `useCallback` hook to memoize the function and prevent unnecessary
+  re-renders. */
   const addFolder = useCallback(async () => {
     try {
       const path = (await open({ directory: true })) as string;
@@ -42,6 +51,9 @@ export default function ConfigPage() {
     }
   }, []);
 
+  /* The `deleteFolderDb` function is a callback function that is used to delete a folder from the
+  application's database. It takes an `id` parameter which represents the id of the folder to be
+  deleted. */
   const deleteFolderDb = useCallback(async (id: string | number) => {
     try {
       await deleteFolder(id);
@@ -52,30 +64,49 @@ export default function ConfigPage() {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col gap-3">
-      <div className="flex justify-between  px-5">
-        <h1 className="capitalize">script folders</h1>
-        <Button
-          onClick={addFolder}
-          size="sm"
-          variant="outline"
-          className="flex items-center gap-2"
-        >
-          Add folder
-        </Button>
+    <ScrollArea className="w-full h-80 bg-gray-950  ">
+      <div className="w-full h-full flex flex-col gap-3 mb-4 ">
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="flex justify-between  px-5">
+              Script Folders
+            </AccordionTrigger>
+            <AccordionContent className="px-5">
+              <div className="flex justify-between  px-5">
+                <h1 className="capitalize">script folders</h1>
+                <Button
+                  onClick={addFolder}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  Add folder
+                </Button>
+              </div>
+              <ScrollArea className="w-full h-80 px-5 mx-auto ">
+                {data
+                  ? data.map((folder) => (
+                      <FolderItem
+                        key={idGenerator.generateUniqueId()}
+                        folder={folder}
+                        onDelete={() => deleteFolderDb(folder.id!)}
+                      />
+                    ))
+                  : "loading"}
+              </ScrollArea>
+            </AccordionContent>
+          </AccordionItem>
+          {/* <AccordionItem value="item-2">
+            <AccordionTrigger className="flex justify-between  px-5">
+              Is it accessible?
+            </AccordionTrigger>
+            <AccordionContent className="px-5">
+              <h1>other configd</h1>
+            </AccordionContent>
+          </AccordionItem> */}
+        </Accordion>
       </div>
-      <ScrollArea className="w-full h-80 px-5 mx-auto ">
-        {data
-          ? data.map((folder) => (
-              <FolderItem
-                key={idGenerator.generateUniqueId()}
-                folder={folder}
-                onDelete={() => deleteFolderDb(folder.id!)}
-              />
-            ))
-          : "loading"}
-      </ScrollArea>
-    </div>
+    </ScrollArea>
   );
 }
 

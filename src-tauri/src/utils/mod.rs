@@ -8,6 +8,6 @@ pub use my_module::say_hello;
 pub use tray::handle_tray_event;
 pub use tray::make_tray;
 
-// scripts executers
-pub use scripts::__cmd__execute_script;
-pub use scripts::execute_script;
+// scripts opener
+pub use scripts::__cmd__open_script;
+pub use scripts::open_script;

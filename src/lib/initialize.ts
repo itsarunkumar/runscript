@@ -6,6 +6,8 @@ import {
 } from "@tauri-apps/api/fs";
 
 export async function initializeApp() {
+  console.log("initialize app");
+
   await initializeAppdir();
 
   await initializeConfig();
@@ -53,7 +55,10 @@ async function initializeConfig() {
   }
   await writeTextFile(
     "runscript/config.json",
-    JSON.stringify({ name: "Runscript" }),
+    JSON.stringify({
+      name: "Runscript",
+      language: [{ name: "Javascript", command: "node", extension: "js" }],
+    }),
     {
       dir: BaseDirectory.Home,
     }

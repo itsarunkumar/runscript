@@ -27,6 +27,11 @@
             "name": "script",
             "cmd": "node",
             "args": true
+          },
+          {
+            "name": "binary/nodejs/node",
+            "sidecar": true,
+            "args": true
           }
         ]
       },
@@ -79,7 +84,8 @@
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"
-      ]
+      ],
+      "externalBin": ["binary/nodejs/node"]
     },
     "security": {
       "csp": null
@@ -90,7 +96,7 @@
         "resizable": false,
         "title": "runscript",
         "width": 600,
-        "height": 400,
+        "height": 420,
         "center": true,
         "decorations": false,
         "visible": true,

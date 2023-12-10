@@ -7,8 +7,9 @@ body,
 :root,
 #root {
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   @apply rounded-lg;
+  @apply overflow-hidden;
 }
 
 @layer base {
