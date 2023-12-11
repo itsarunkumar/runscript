@@ -3,7 +3,7 @@ import { FileEntry, readDir } from "@tauri-apps/api/fs";
 import { metadata } from "tauri-plugin-fs-extra-api";
 import Fuse from "fuse.js";
 
-import { Folder, getFolders } from "../db";
+import { Folder, folderDb } from "../db";
 
 interface ScriptList {
   scripts: (FileEntry | null)[][];
@@ -18,7 +18,7 @@ export const useScriptList = create<ScriptList>((set, get) => ({
   searchTerm: "",
   searchResults: [],
   fetchScripts: async () => {
-    const folders = (await getFolders()) as Folder[];
+    const folders = (await folderDb.getFolders()) as Folder[];
 
     const entries = await Promise.all(
       folders.map(async (folder) => {

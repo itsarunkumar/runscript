@@ -1,49 +1,58 @@
 import { Store } from "tauri-plugin-store-api";
 import { homeDir, join } from "@tauri-apps/api/path";
 
-const config = await join(await homeDir(), "runscript", "config.json");
-
-const store = new Store(config);
-
-export async function setStore() {
-  await store.set("some-key", {
-    value: Math.floor(Math.random() * 100),
-  });
-
-  const val = await store.get("some-key");
-  console.log("val", val);
-
-  const res = await store.save();
-  console.log("res", res);
+interface Language {
+  name: string;
+  extension: string;
+  command: string;
 }
 
-// this manually saves the store, otherwise the store is only saved when your app is closed
+class ConfigManager {
+  private store!: Store;
 
-export async function setLanguage(
-  lang: string,
-  extension: string,
-  command: string
-) {
-  const prev =
-    ((await store.get("language")) as Array<Record<string, string>>) || [];
-
-  const exists = prev.find((item) => item.name === lang);
-
-  console.log("lang exists", exists);
-  if (exists) {
-    return;
+  constructor() {
+    this.initStore();
   }
 
-  prev.push({
-    name: lang,
-    extension: extension,
-    command: command,
-  });
+  private async initStore() {
+    const configPath = await join(await homeDir(), "runscript", "config.json");
+    this.store = new Store(configPath);
+  }
 
-  await store.set("language", prev);
-  await store.save();
+  async newStore(key: string, value: any) {
+    await this.store.set(key, value);
+    this.store.save();
+  }
+
+  async getStore(key: string) {
+    const result_store = await this.store.get(key);
+
+    return result_store;
+  }
+
+  async setLanguage(lang: string, extension: string, command: string) {
+    const prev = ((await this.store.get("language")) as Language[]) || [];
+
+    const exists = prev.find((item) => item.name === lang);
+
+    console.log("lang exists", exists);
+    if (exists) {
+      return;
+    }
+
+    prev.push({
+      name: lang,
+      extension,
+      command,
+    });
+
+    await this.store.set("language", prev);
+    await this.store.save();
+  }
+
+  async getLanguageCommands(): Promise<Language[]> {
+    return (await this.store.get("language")) as Language[];
+  }
 }
 
-export async function getLanguageCommands() {
-  return (await store.get("language")) as Array<Record<string, string>>;
-}
+export const appConfig = new ConfigManager();

@@ -57,7 +57,10 @@ async function initializeConfig() {
     "runscript/config.json",
     JSON.stringify({
       name: "Runscript",
-      language: [{ name: "Javascript", command: "node", extension: "js" }],
+      language: [
+        { name: "Javascript", command: "node", extension: "js" },
+        { name: "Python", command: "python", extension: "py" },
+      ],
     }),
     {
       dir: BaseDirectory.Home,

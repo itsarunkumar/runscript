@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 
-import { getLanguageCommands } from "@/lib/config-store";
+import { appConfig } from "@/lib/config-store";
 import { Button } from "./ui/button";
 
 export default function Preview({ file }: { file: FileEntry }) {
@@ -15,7 +15,7 @@ export default function Preview({ file }: { file: FileEntry }) {
   useEffect(() => {
     async function updatePreview() {
       const meta = await metadata(file.path);
-      const langs = await getLanguageCommands();
+      const langs = await appConfig.getLanguageCommands();
       const extension = file.name!.split(".").pop();
 
       const matchingLang = langs.find((lang) => lang.extension === extension);
@@ -42,10 +42,10 @@ export default function Preview({ file }: { file: FileEntry }) {
   // Check if data is available before rendering
   if (!scriptMeta || !command || !langName) {
     return (
-      <p className="text-gray-500 first-letter:uppercase  flex flex-col gap-2">
-        <span>{file.name}</span>
-        script is not selected or selected script language is not in the config
-        file.
+      <p className="text-gray-500 capitalize  flex flex-col gap-2">
+        <span className="text-sm normal-case">{file.name}</span>
+        selected script language is not in the config file. open the config file
+        by clicking on the bottom right corner "open config" option
       </p>
     );
   }

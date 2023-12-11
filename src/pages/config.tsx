@@ -6,7 +6,7 @@ import { sep } from "@tauri-apps/api/path";
 
 import { Button } from "@/components/ui/button";
 
-import { getFolders, insertFolder, deleteFolder, Folder } from "@/lib/db";
+import { Folder, folderDb } from "@/lib/db";
 import { idGenerator } from "@/lib/unique-id";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -22,7 +22,7 @@ export default function ConfigPage() {
   useEffect(() => {
     async function initApp() {
       try {
-        const folders = (await getFolders()) as Folder[];
+        const folders = (await folderDb.getFolders()) as Folder[];
 
         setData(folders);
       } catch (error) {
@@ -43,7 +43,7 @@ export default function ConfigPage() {
       const folderName = path.split(sep);
       const name = folderName[folderName.length - 1];
 
-      await insertFolder({ name, path });
+      await folderDb.insertFolder({ name, path });
 
       setData((prev) => (prev ? [...prev, { name, path }] : []));
     } catch (error) {
@@ -56,7 +56,7 @@ export default function ConfigPage() {
   deleted. */
   const deleteFolderDb = useCallback(async (id: string | number) => {
     try {
-      await deleteFolder(id);
+      await folderDb.deleteFolder(id);
       setData((prev) => (prev ? prev.filter((item) => item.id !== id) : []));
     } catch (error) {
       console.error("Error deleting folder:", error);

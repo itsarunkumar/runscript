@@ -3,7 +3,7 @@ import { FileEntry } from "@tauri-apps/api/fs";
 
 import { PlayIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
-import { getLanguageCommands } from "@/lib/config-store";
+import { appConfig } from "@/lib/config-store";
 import { executeScript } from "@/lib/rust";
 
 export function SingleScript({
@@ -23,7 +23,7 @@ export function SingleScript({
 
   useEffect(() => {
     async function initApp() {
-      const langs = await getLanguageCommands();
+      const langs = await appConfig.getLanguageCommands();
       console.log(langs);
       const extension = file.name!.split(".").pop();
 
