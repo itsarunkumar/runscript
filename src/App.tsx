@@ -37,8 +37,8 @@ const App: React.FC = () => {
             console.log("auto", await isEnabled());
         }
 
-        function closeonEsc(e: KeyboardEvent) {
-            if (e.code === "Escape") {
+        function closeonEsc(event: { code: string }) {
+            if (event.code === "Escape") {
                 appWindow.hide();
             }
         }
@@ -62,6 +62,7 @@ const App: React.FC = () => {
     return (
         <div className="w-full h-full relative bg-gray-950 ">
             <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
             {searchTerm.length === 0 ? (
                 <Tabs defaultValue="scripts" className="w-full">
                     <TabsList>
