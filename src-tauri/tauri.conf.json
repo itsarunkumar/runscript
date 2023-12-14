@@ -101,6 +101,19 @@
         "systemTray": {
             "iconAsTemplate": true,
             "iconPath": "icons/32x32.png"
+        },
+
+        "updater": {
+            "active": true,
+            "dialog": true,
+            "endpoints": [
+                "https://dist.anystack.sh/v1/tauri/9ad864f3-07ef-4fca-95ab-973bf2627c91/{{current_version}}"
+            ],
+            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZCQThCRDQ2M0QzOEUzMDYKUldRRzR6ZzlScjJvYTluM3ZqY0oxcndoQ3Vyb2QwcnExS3MyRkVlbDFSUTkxV1E0VXVja3AvOXcK",
+            "windows": {
+                "installMode": "passive",
+                "installerArgs": []
+            }
         }
     }
 }
