@@ -1,70 +1,62 @@
 import { create } from "zustand";
-import { FileEntry, readDir } from "@tauri-apps/api/fs";
-import { metadata } from "tauri-plugin-fs-extra-api";
 import Fuse from "fuse.js";
 
-import { Folder, folderDb } from "../db";
+import { localStore } from "./local-store";
+import { ALL_SCRIPTS } from "./store-constants";
+
+import { Script } from "@/types";
 
 interface ScriptList {
-  scripts: (FileEntry | null)[][];
-  searchTerm: string;
-  searchResults: (FileEntry | null)[];
-  fetchScripts: () => Promise<void>;
-  search: (searchTerm: string) => void;
+    scripts: (Script | null)[];
+    searchTerm: string;
+    searchResults: (Script | null)[];
+    fetchScripts: () => Promise<void>;
+    editScript: (script: Script, name: string) => void;
+    search: (searchTerm: string) => void;
 }
 
 export const useScriptList = create<ScriptList>((set, get) => ({
-  scripts: [],
-  searchTerm: "",
-  searchResults: [],
-  fetchScripts: async () => {
-    const folders = (await folderDb.getFolders()) as Folder[];
+    scripts: [],
+    searchTerm: "",
+    searchResults: [],
+    fetchScripts: async () => {
+        const scripts = (await localStore.getStore(
+            ALL_SCRIPTS
+        )) as (Script | null)[];
 
-    const entries = await Promise.all(
-      folders.map(async (folder) => {
-        const filesOnly = await readDir(folder.path);
+        set({ scripts: scripts });
+    },
+    search: (searchTerm: string) => {
+        if (!searchTerm) {
+            set({ searchTerm, searchResults: [] });
+            return;
+        }
 
-        // Use Promise.all to perform the asynchronous operation for each file
-        const filteredFiles = await Promise.all(
-          filesOnly.map(async (file) => {
-            // // Perform asynchronous operation for each file
-            // const hasChildren = file.children ? true : false;
-            // return hasChildren ? null : file;
+        const flattenedData = get().scripts.flat();
+        const fuse = new Fuse(flattenedData, {
+            shouldSort: true,
+            includeScore: true,
+            threshold: 0.6,
+            keys: ["name", "path", "fileName"],
+        });
 
-            const meta = await metadata(file.path);
+        const results = fuse.search(searchTerm);
+        const searchResults = results.map((result) => result.item);
 
-            if (meta.isDir) {
-              return null;
-            } else {
-              return file;
-            }
-          })
+        set({ searchTerm, searchResults });
+    },
+    editScript: async (script: Script, name: string) => {
+        const oldScripts = (await localStore.getStore(ALL_SCRIPTS)) as Script[];
+        const editScript = oldScripts.find((s) => s.path === script.path);
+
+        const unEditedScripts = oldScripts.filter(
+            (s) => s.path !== script.path
         );
+        const newScripts = [...unEditedScripts, { ...editScript, name }];
+        // console.log("from zus edit script", { ...editScript, name });
+        // console.log("from zus unedit", unEditedScripts);
+        await localStore.newStore(ALL_SCRIPTS, newScripts);
 
-        // Filter out null values (entries with children)
-        return filteredFiles.filter((file) => file !== null);
-      })
-    );
-    const scripts = await Promise.all(entries);
-
-    set({ scripts: scripts });
-  },
-  search: (searchTerm: string) => {
-    if (!searchTerm || searchTerm.length === 0 || searchTerm === " ") {
-      return (get().searchResults = []);
-    }
-
-    const flattenedData = get().scripts.flat();
-    const fuse = new Fuse(flattenedData, {
-      shouldSort: true,
-      includeScore: true,
-      threshold: 0.6,
-      keys: ["name", "path"],
-    });
-
-    const results = fuse.search(searchTerm);
-    const searchResults = results.map((result) => result.item);
-
-    set({ searchTerm, searchResults });
-  },
+        await get().fetchScripts();
+    },
 }));

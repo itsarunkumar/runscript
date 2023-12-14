@@ -1,67 +1,78 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { FileEntry } from "@tauri-apps/api/fs";
+import { useEffect, useState } from "react";
+import { Metadata, metadata } from "tauri-plugin-fs-extra-api";
 
-import { PlayIcon } from "@radix-ui/react-icons";
+import { ShieldAlert } from "lucide-react";
 import { Button } from "./ui/button";
-import { appConfig } from "@/lib/config-store";
 import { executeScript } from "@/lib/rust";
+import { appConfig } from "@/lib/store/config-store";
 
-export function SingleScript({
-  file,
-  setActive,
-}: {
-  file: FileEntry;
-  setActive: Dispatch<SetStateAction<FileEntry | null>>;
-}) {
-  const [command, setCommand] = useState<string>();
-  const [langName, setlangName] = useState<string>();
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
-  // async function executeScript() {
-  //   const res = await invoke("run_script", { command, args: [file.path] });
-  //   console.log("res execed", res);
-  // }
+import { Language, Script } from "@/types";
 
-  useEffect(() => {
-    async function initApp() {
-      const langs = await appConfig.getLanguageCommands();
-      console.log(langs);
-      const extension = file.name!.split(".").pop();
+export function SingleScript({ file }: { file: Script }) {
+    const [meta, setMetadata] = useState<Metadata | undefined>();
+    const [commandAndLang, setCommandAndLang] = useState<
+        Language | undefined
+    >();
 
-      langs.find((lang) => {
-        lang.extension === extension && setCommand(lang.command);
-      });
+    useEffect(() => {
+        async function updatePreview() {
+            const filemetadata = await metadata(file.path);
+            setMetadata(filemetadata);
 
-      langs.find((lang) => {
-        lang.extension === extension && setlangName(lang.name);
-      });
-    }
+            const extension = file.fileName.split(".").toReversed()[0];
 
-    initApp();
-  }, []);
+            const getCandL = await appConfig.getLangAndCommand(extension);
 
-  return (
-    <>
-      <Button
-        variant="transparent"
-        onClick={() => setActive(file)}
-        type="button"
-        className="w-full h-fit hover:bg-gray-700"
-      >
-        <div className="w-full flex flex-col items-start justify-center gap-1">
-          <h1 className="text-base text-gray-50">{file.name}</h1>
-          <span className="text-sm text-gray-500">{langName}</span>
+            setCommandAndLang(getCandL);
+        }
+        updatePreview();
+    }, []);
+
+    return (
+        <div className=" w-full  flex justify-between items-center gap-2  py-2 px-5 rounded-md hover:bg-gray-100">
+            <HoverCard>
+                <HoverCardTrigger className="cursor-pointer capitalize font-semibold">
+                    {file.name}
+                    {!commandAndLang && (
+                        <p className="text-xs text-gray-500 font-normal first-letter:capitalize">
+                            language of this script is not configured
+                        </p>
+                    )}
+                </HoverCardTrigger>
+                <HoverCardContent sideOffset={10} className="w-fit">
+                    <div className="w-fit space-y-1">
+                        <h1 className="text-sm uppercase">{file.name}</h1>
+                        <h1 className="text-xs text-gray-600">
+                            File:{file.fileName}
+                        </h1>
+                        <p className="text-xs text-gray-500">
+                            Last run : {meta?.accessedAt.toLocaleDateString()}
+                        </p>
+                    </div>
+                </HoverCardContent>
+            </HoverCard>
+            {commandAndLang ? (
+                <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() =>
+                        executeScript({
+                            command: commandAndLang?.command!,
+                            args: [file.path],
+                        })
+                    }
+                >
+                    Run
+                </Button>
+            ) : (
+                <ShieldAlert className="w-5 text-neutral-500" />
+            )}
         </div>
-
-        {command && (
-          <Button
-            onClick={() => executeScript({ command, args: [file.path] })}
-            variant="ghost"
-            size="sm"
-          >
-            <PlayIcon className="text-gray-500" />
-          </Button>
-        )}
-      </Button>
-    </>
-  );
+    );
 }
